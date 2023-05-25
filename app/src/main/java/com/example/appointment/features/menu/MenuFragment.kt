@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.appointment.R
-import com.example.appointment.databinding.FragmentAuthBinding
 import com.example.appointment.databinding.FragmentMenuBinding
 import com.example.appointment.features.auth.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MenuFragment : Fragment() {
 
     private lateinit var binding : FragmentMenuBinding

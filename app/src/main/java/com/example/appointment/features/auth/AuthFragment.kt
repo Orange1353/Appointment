@@ -1,22 +1,27 @@
 package com.example.appointment.features.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
 import com.example.appointment.databinding.FragmentAuthBinding
 import com.example.appointment.features.menu.MenuFragment
+import com.example.appointment.models.local.UserModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
  * Use the [AuthFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class AuthFragment : Fragment() {
 
     private lateinit var binding : FragmentAuthBinding
@@ -46,13 +51,23 @@ class AuthFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.NextFrag.setOnClickListener{
-            openNextFrag("Успех!")
+            viewModel.settings.setCurrentToken("Hilt")
+            val hiltMessege = viewModel.settings.getCurrentToken()
+            openNextFrag("$hiltMessege")
+            lifecycleScope.launch {
+                val userModel = UserModel("hui","budu")
+                viewModel.userRepository.addUser(userModel)
+                viewModel.userRepository.getUser("budu")
+            }
         }
+
+
 
         return view
     }
 
     private fun openNextFrag(value: String){
+
         findNavController().navigate(R.id.action_authFragment_to_menuFragment, bundleOf(MenuFragment.MESSAGEAuthTOMenu_KEY to value))
     }
 
