@@ -1,16 +1,16 @@
-package com.example.appointment.data.repositories
+package com.example.appointment.providers.data.repositories
 
-import com.example.appointment.data.dao.UserDao
 import com.example.appointment.models.entities.UserEntity
 import com.example.appointment.models.local.UserModel
+import com.example.appointment.providers.data.dao.UserDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class UserRepository(
+class UserRepository @Inject constructor (
     private val userDao: UserDao,
-) : iUserRepisitory {
+) : IUserRepisitory {
 
-    /**************************************/
     override suspend fun getUser(email: String): UserModel? = withContext(Dispatchers.IO) {
         val entity = userDao.getUser(email)?.firstOrNull()
         entity?.let {
@@ -23,9 +23,8 @@ class UserRepository(
         userDao.addUser(entity)
     }
 
-    /**************************************/
 }
-interface iUserRepisitory {
+interface IUserRepisitory {
     suspend fun addUser (user: UserModel)
     suspend fun getUser (email: String):UserModel?
 
