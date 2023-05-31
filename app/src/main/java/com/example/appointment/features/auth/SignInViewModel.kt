@@ -1,4 +1,4 @@
-package com.example.appointment.features.menu
+package com.example.appointment.features.auth
 
 import android.service.controls.ControlsProviderService
 import android.util.Log
@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appointment.data.repositories.BaseAuthRepository
 import com.example.appointment.data.repositories.IUserRepisitory
-import com.example.appointment.features.auth.AllEvents
 import com.example.appointment.hilt.IAppSettings
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,9 +14,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
-class MenuViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val repository : BaseAuthRepository
 ) : ViewModel() {
     @Inject
@@ -26,8 +24,8 @@ class MenuViewModel @Inject constructor(
     lateinit var userRepository: IUserRepisitory
 
     private val _firebaseUser = MutableLiveData<FirebaseUser?>()
-
     val currentUser get() = _firebaseUser
+
     //create our channels that will be used to pass messages to the main ui
     //create event channel
     private val eventsChannel = Channel<AllEvents>()
@@ -35,21 +33,32 @@ class MenuViewModel @Inject constructor(
     //in the ui
     val allEventsFlow = eventsChannel.receiveAsFlow()
 
-    fun signOut() = viewModelScope.launch {
-        try {
-            val user = repository.signOut()
-            user?.let {
-                eventsChannel.send(AllEvents.Message("logout failure"))
-            }?: eventsChannel.send(AllEvents.LogOutSuccess("sign out successful"))
+    //validate all fields first before performing any sign in operations
+    fun signInUser(email: String , password: String) = viewModelScope.launch{
+        when {
+            email.isEmpty() -> {
+                eventsChannel.send(AllEvents.ErrorCode(1))
+            }
+            password.isEmpty() -> {
+                eventsChannel.send(AllEvents.ErrorCode(2))
+            }
+            else -> {
+                actualSignInUser(email , password)
+            }
+        }
+    }
 
+    private fun actualSignInUser(email:String, password: String) = viewModelScope.launch {
+        try {
+            val user = repository.signInWithEmailPassword(email, password)
+            user?.let {
+                _firebaseUser.postValue(it)
+                eventsChannel.send(AllEvents.Message("login success"))
+            }
         }catch(e:Exception){
             val error = e.toString().split(":").toTypedArray()
             Log.d(ControlsProviderService.TAG, "signInUser: ${error[1]}")
             eventsChannel.send(AllEvents.Error(error[1]))
         }
-    }
-    fun getCurrentUser() = viewModelScope.launch {
-        val user = repository.getCurrentUser()
-        _firebaseUser.postValue(user)
     }
 }

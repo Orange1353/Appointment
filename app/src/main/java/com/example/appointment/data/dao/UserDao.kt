@@ -1,4 +1,4 @@
-package com.example.appointment.providers.data.dao
+package com.example.appointment.data.dao
 
 
 import androidx.room.Dao

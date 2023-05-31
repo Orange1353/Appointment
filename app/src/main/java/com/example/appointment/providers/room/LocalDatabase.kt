@@ -1,9 +1,9 @@
-package com.example.appointment.providers
+package com.example.appointment.providers.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.appointment.data.dao.UserDao
 import com.example.appointment.models.entities.UserEntity
-import com.example.appointment.providers.data.dao.UserDao
 
 @Database(
     version = 1,
