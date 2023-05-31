@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
-import com.example.appointment.databinding.FragmentMenuBinding
-import com.example.appointment.features.menu.MenuViewModel
+import com.example.appointment.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -22,10 +21,18 @@ import kotlinx.coroutines.launch
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class MenuFragment : Fragment(R.layout.fragment_menu) {
-    private var _binding : FragmentMenuBinding? = null
+class SplashFragment : Fragment() {
+
+    //private lateinit var binding : FragmentAuthBinding
+
+    private var _binding : FragmentSplashBinding? = null
     private val binding get() = _binding
-    private val viewModel : MenuViewModel by activityViewModels()
+    private val viewModel : SplashViewModel by activityViewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,14 +41,13 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         // Inflate the layout for this fragment
 
         //Initial binding
-        _binding = FragmentMenuBinding.inflate(inflater, container, false)
+        _binding = FragmentSplashBinding.inflate(inflater, container, false)
         getUser()
         registerObserver()
-        listenToChannels()
         val view = binding?.root
 
         // получение viewModel, для доспупа к методам vm
-        val viewModel: MenuViewModel by viewModels()
+        val viewModel: SplashViewModel by viewModels()
         binding?.vm = viewModel
         binding?.lifecycleOwner = viewLifecycleOwner
         return view
@@ -49,33 +55,24 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     private fun getUser() {
         viewModel.getCurrentUser()
     }
+    //проверка входа пользователя и отправления его на соотвествующтий экран
     private fun registerObserver() {
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                binding?.apply {
-                    logoutButton.setOnClickListener {
-                        viewModel.signOut()
-                        findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
+            lifecycleScope.launch{
+                delay(1000L)
+                user?.let {
+                    binding?.apply {
+                        findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
                     }
+                } ?: binding?.apply {
+                    findNavController().navigate(R.id.action_splashFragment_to_signInFragment)
                 }
             }
         }
     }
-
-    private fun listenToChannels() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allEventsFlow.collect { event ->
-                when {
-                    event is AllEvents.LogOutSuccess ->{
-                        Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
-                    }
-                    event is AllEvents.Message ->{
-                        Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
+    //Смотри название метода
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
 }

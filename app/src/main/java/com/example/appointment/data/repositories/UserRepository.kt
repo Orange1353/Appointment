@@ -1,8 +1,8 @@
-package com.example.appointment.providers.data.repositories
+package com.example.appointment.data.repositories
 
+import com.example.appointment.data.dao.UserDao
 import com.example.appointment.models.entities.UserEntity
 import com.example.appointment.models.local.UserModel
-import com.example.appointment.providers.data.dao.UserDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
