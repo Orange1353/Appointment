@@ -1,6 +1,7 @@
 package com.example.appointment.features.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.appointment.R
 import com.example.appointment.databinding.FragmentMenuBinding
 import com.example.appointment.features.menu.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_menu.write_button
 import kotlinx.coroutines.launch
 
 /**
@@ -26,6 +28,11 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     private var _binding : FragmentMenuBinding? = null
     private val binding get() = _binding
     private val viewModel : MenuViewModel by activityViewModels()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        MenuToWrite()
+//        MenuToSplash()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +51,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         val viewModel: MenuViewModel by viewModels()
         binding?.vm = viewModel
         binding?.lifecycleOwner = viewLifecycleOwner
+
         return view
     }
     private fun getUser() {
@@ -55,7 +63,8 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                 binding?.apply {
                     logoutButton.setOnClickListener {
                         viewModel.signOut()
-                        findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
+                        Log.e("5555", "5555")
+                        findNavController().navigate(R.id.action_menuFragment_to_splashFragment2)
                     }
                 }
             }
@@ -68,7 +77,6 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                 when {
                     event is AllEvents.LogOutSuccess ->{
                         Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
                     }
                     event is AllEvents.Message ->{
                         Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
@@ -78,4 +86,14 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         }
     }
 
+//    fun MenuToSplash (){
+//        logout_button.setOnClickListener{
+//            findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
+//        }
+//    }
+    fun MenuToWrite(){
+        write_button.setOnClickListener{
+            findNavController().navigate(R.id.action_menuFragment_to_writeFragment)
+        }
+    }
 }
