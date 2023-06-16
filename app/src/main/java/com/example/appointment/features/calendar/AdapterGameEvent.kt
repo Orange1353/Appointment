@@ -1,4 +1,4 @@
-package com.example.appointment.features.write
+package com.example.appointment.features.calendar
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appointment.R
 import com.example.appointment.models.local.GameEventModel
 
-class AdapterGameEvent (private val GameEventlist: List<GameEventModel>, private val onItemClicked: (position: Int) -> Unit)
+class AdapterGameEvent (private val onItemClicked: (position: Int) -> Unit)
     : RecyclerView.Adapter<AdapterGameEvent.MyViewHolder>()
 {
-
+    var gameEventlist = mutableListOf<GameEventModel>()
+    fun setGameEventList(gameEvents: List<GameEventModel>) {
+        this.gameEventlist = gameEvents.toMutableList()
+        notifyDataSetChanged()
+    }
     // This method creates a new ViewHolder object for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         // Inflate the layout for each item and return a new ViewHolder object
@@ -23,14 +27,15 @@ class AdapterGameEvent (private val GameEventlist: List<GameEventModel>, private
     // This method returns the total
     // number of items in the data set
     override fun getItemCount(): Int {
-        return GameEventlist.size
+        return gameEventlist.size
     }
 
     // This method binds the data to the ViewHolder object
     // for each item in the RecyclerView
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentEmp = GameEventlist[position]
+        val currentEmp = gameEventlist[position]
         holder.gameEventName.text = currentEmp.gameEventName
+        holder.orgName.text = currentEmp.orgName
     }
 
     // This class defines the ViewHolder object for each item in the RecyclerView
@@ -38,7 +43,7 @@ class AdapterGameEvent (private val GameEventlist: List<GameEventModel>, private
         : RecyclerView.ViewHolder(itemView), View.OnClickListener
     {
         val gameEventName: TextView = itemView.findViewById(R.id.gameEventName)
-
+        val orgName: TextView = itemView.findViewById(R.id.orgName)
         init {
             itemView.setOnClickListener(this)
         }
