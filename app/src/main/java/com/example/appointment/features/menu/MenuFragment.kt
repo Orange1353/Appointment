@@ -93,7 +93,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 //    }
     fun MenuToWrite(){
         write_button.setOnClickListener{
-            findNavController().navigate(R.id.action_menuFragment_to_writeFragment)
+            findNavController().navigate(R.id.action_menuFragment_to_calendarFragment)
         }
     }
 }

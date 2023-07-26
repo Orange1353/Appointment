@@ -3,6 +3,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView.OnDateChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,7 +13,9 @@ import com.example.appointment.R
 import com.example.appointment.databinding.FragmentCalendarBinding
 import com.example.appointment.features.write.WriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_calendar.calendarView
 import kotlinx.android.synthetic.main.fragment_calendar.game_event_recycler
+
 
 @AndroidEntryPoint
 class CalendarFragment: Fragment(R.layout.fragment_calendar) {
@@ -54,10 +57,20 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar) {
 
         game_event_recycler.adapter = gameEventAdapter
 
-        viewModel.eventList.observe(viewLifecycleOwner, Observer { updatedEventList ->
+
+        viewModel.eventListDay.observe(viewLifecycleOwner, Observer { updatedEventList ->
             //устранавливает обновленный лист в адаптер
             gameEventAdapter.setGameEventList(updatedEventList)
         })
 
+
+//        viewModel.eventListMonth.observe(viewLifecycleOwner, Observer { updatedEventList ->
+//            //устранавливает обновленный лист в адаптер
+//            gameEventAdapter.setGameEventList(updatedEventList)
+//        })
+
+        calendarView.setOnDateChangeListener(OnDateChangeListener { calendarView, year, month, day ->
+            viewModel.onCalendarSetDate(year.toString(), (month+1).toString(), day.toString())
+        })
     }
 }
