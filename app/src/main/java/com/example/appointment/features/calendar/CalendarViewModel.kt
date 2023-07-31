@@ -9,8 +9,11 @@ import com.example.appointment.hilt.IAppSettings
 import com.example.appointment.models.local.GameEventModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import javax.inject.Inject
 
@@ -29,20 +32,31 @@ class CalendarViewModel @Inject constructor(
     init {
 
     }
+    private val dates: HashSet<CalendarDay>? = null
     var startDay = SimpleDateFormat("DD.").format(Date())
     var startMonth = SimpleDateFormat("MM.").format(Date())
     var startYear = SimpleDateFormat("YYYY").format(Date())
 
-
+    //Выбранная дата (при запуске это сегодняшняя)
     val calendarDay = MutableLiveData(CalendarDate(startDay,startMonth,startYear) )
     val db = Firebase.firestore
+    //все события в данный месяц
     var eventListMonth = MutableLiveData<List<GameEventModel>>()
-
+    //события дня на выбранную дату. Отображение в recyclerView
     val eventListDay = Transformations.switchMap(eventListMonth) { listMonth ->
         Transformations.map(calendarDay) { calendarDayValue ->
             listMonth.filter {
                   it.day == calendarDayValue.getFullDate()
             }
+        }
+    }
+    //Список дат событий для индикатора
+    val dayDecorator = Transformations.map(eventListMonth) { listMonth ->
+          listMonth.map { event ->
+            val dayString = event.day.orEmpty()
+            val format = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            val date: LocalDate  =  LocalDate.parse(dayString, format)
+            CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
         }
     }
 
@@ -62,24 +76,26 @@ class CalendarViewModel @Inject constructor(
                 eventListMonth.value = dockList
             }
         }
-        //metodChangeColor
     }
     //private val _firebaseUser = MutableLiveData<FirebaseUser?>()
 
     fun onListItemClick (position: Int){
         Log.e("position55555555","$position")
     }
+    //вызывается из фрагмента по нажатию на календарь и передает выбраную дату
     fun onCalendarSetDate (year: String, month: String, day : String) {
+        //меняет тип месяца (добавлет 0 к месяцам 1...9)
         val newMonth = if (month.length < 2)
             "0$month."
         else
             "$month."
-
+        //Приведение типа данных для calendarDay.
         val newCalendarDate = CalendarDate(
             day = "$day.",
             month = newMonth,
             year = year
         )
+        //проверка на изменения месяца или года для обновления списка собитий на месяц.
         if(calendarDay.value?.month != newMonth || calendarDay.value?.year != year){
             calendarDay.value = newCalendarDate
             getDocumentOnFirebase()

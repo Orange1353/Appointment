@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         tools:context="com.example.appointment.features.write.WriteFragment">
 
-
         <TextView
             android:id="@+id/welcome_txt"
             android:layout_width="match_parent"
@@ -27,12 +26,25 @@
             app:layout_constraintTop_toBottomOf="@+id/back_button"
             tools:layout_editor_absoluteX="0dp" />
 
-        <CalendarView
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/welcome_txt"
-            tools:layout_editor_absoluteX="0dp" />
+            app:layout_constraintBottom_toTopOf="@+id/guideline1"
+            app:mcv_arrowColor="#00F"
+            app:mcv_firstDayOfWeek="monday"
+            app:mcv_selectionColor="#00F"
+            app:mcv_showOtherDates="all"
+            app:mcv_tileHeight="40dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/game_event_recycler"
