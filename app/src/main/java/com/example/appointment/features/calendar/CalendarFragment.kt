@@ -1,9 +1,10 @@
 package com.example.appointment.features.calendar
+
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView.OnDateChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -45,7 +46,6 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         //создание Адаптера? Передаем ему ивенты из фаербазы
         viewModel.getDocumentOnFirebase()
         //СОздание пустого адптера
@@ -63,14 +63,16 @@ class CalendarFragment: Fragment(R.layout.fragment_calendar) {
             gameEventAdapter.setGameEventList(updatedEventList)
         })
 
+        calendarView.setOnDateChangedListener { widget, date, selected ->
+            viewModel.onCalendarSetDate(date.year.toString(), date.month.toString(), date.day.toString()) }
+        calendarView.setOnMonthChangedListener { widget, date ->
+            viewModel.onCalendarSetDate(date.year.toString(), date.month.toString(), date.day.toString()) }
+        observeDecorateEventsDay()
 
-//        viewModel.eventListMonth.observe(viewLifecycleOwner, Observer { updatedEventList ->
-//            //устранавливает обновленный лист в адаптер
-//            gameEventAdapter.setGameEventList(updatedEventList)
-//        })
-
-        calendarView.setOnDateChangeListener(OnDateChangeListener { calendarView, year, month, day ->
-            viewModel.onCalendarSetDate(year.toString(), (month+1).toString(), day.toString())
+    }
+    fun observeDecorateEventsDay(){
+        viewModel.dayDecorator.observe(viewLifecycleOwner, Observer { dayDecorator ->
+            calendarView.addDecorators(EventDecorator(Color.RED, dayDecorator))
         })
     }
 }
