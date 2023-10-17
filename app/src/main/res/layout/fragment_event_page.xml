@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.appointment.features.eventPage.EventPageViewModel" />
+
+        <import type="android.text.TextUtils" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.appointment.features.eventPage.eventPageFragment">
+
+        <ImageView
+            android:id="@+id/logo_org_image"
+            android:layout_width="142dp"
+            android:layout_height="138dp"
+            android:src="@drawable/android_zalupa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/orgName"
+            android:layout_width="97dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.304"
+            app:layout_constraintStart_toEndOf="@+id/logo_org_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="OrgName" />
+
+        <TextView
+            android:id="@+id/gameEventName"
+            android:layout_width="152dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.606"
+            app:layout_constraintStart_toEndOf="@+id/logo_org_image"
+            app:layout_constraintTop_toBottomOf="@+id/orgName"
+            tools:text="GameName" />
+
+        <TextView
+            android:id="@+id/timeLine"
+            android:layout_width="211dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="10"
+            android:textColor="#454545"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.78"
+            app:layout_constraintStart_toEndOf="@+id/logo_org_image"
+            app:layout_constraintTop_toBottomOf="@+id/gameEventName"
+            tools:text="Timeline" />
+
+        <Button
+            android:id="@+id/regaOnGameBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rega on game"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

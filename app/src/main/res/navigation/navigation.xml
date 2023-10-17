@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_menuFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_personalDataFragment"
+            app:destination="@id/personalDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
@@ -84,6 +87,27 @@
         tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_eventPageFragment"
+            app:destination="@id/eventPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventPageFragment"
+        android:name="com.example.appointment.features.eventPage.EventPageFragment"
+        android:label="EventPageFragment"
+        tools:layout="@layout/fragment_event_page">
+        <action
+            android:id="@+id/action_eventPageFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personalDataFragment"
+        android:name="com.example.appointment.features.eventPage.PersonalDataFragment"
+        android:label="PersonalDataFragment"
+        tools:layout="@layout/fragment_personal_data">
+        <action
+            android:id="@+id/action_personalDataFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
     </fragment>
 </navigation>

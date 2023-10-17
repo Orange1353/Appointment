@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.appointment.data.repositories.IUserRepisitory
 import com.example.appointment.hilt.IAppSettings
 import com.example.appointment.models.local.GameEventModel
+import com.example.appointment.models.navigation.NavigationEvent
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -59,29 +60,38 @@ class CalendarViewModel @Inject constructor(
             CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
         }
     }
+//    val onClickEventPage : GameEventModel =
 
     fun getDocumentOnFirebase() {
         calendarDay.value?.getMonthYear()?.let { date ->
-            val docRef = db.collection(date)
+            val docRef = db.collection("GamesByMounths").document(date)
             val dockList = mutableListOf<GameEventModel>()
             docRef.get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val day = document[KEY_DAY].toString()
-                    val logo = document[KEY_LOGO].toString()
-                    val nameGame = document[KEY_NAMEGAME].toString()
-                    val nameOrg = document[KEY_NAMEORG].toString()
-                    val timelinne = document[KEY_TIMELINNE].toString()
-                    dockList.add(GameEventModel(day = day, logo = logo, gameEventName = nameGame, orgName=nameOrg, timeLine=timelinne))
+                documents.data?.keys?.let { idGames ->
+                    idGames.forEach { idGame->
+                        val splitedIdGame = idGame.split("_")
+                        val day = splitedIdGame.getOrNull(2).orEmpty()
+                        val nameGame = splitedIdGame.getOrNull(1).orEmpty()
+                        val nameOrg = splitedIdGame.getOrNull(0).orEmpty()
+                        dockList.add(GameEventModel(day = day, gameEventName = nameGame, orgName=nameOrg, idGame = idGame))
+                    }
+                    eventListMonth.value = dockList.filter { it.day != "null" }.reversed()
                 }
-                eventListMonth.value = dockList
             }
         }
     }
-    //private val _firebaseUser = MutableLiveData<FirebaseUser?>()
 
+    val navigationEvent = MutableLiveData<NavigationEvent>()
     fun onListItemClick (position: Int){
+        val gameEventModel =  eventListMonth.value?.getOrNull(position)
+
+        gameEventModel?.let { selectedGameEvent ->
+            navigationEvent.value = NavigationEvent.NavigateToEvent(selectedGameEvent)
+        }
         Log.e("position55555555","$position")
     }
+
+
     //вызывается из фрагмента по нажатию на календарь и передает выбраную дату
     fun onCalendarSetDate (year: String, month: String, day : String) {
         //меняет тип месяца (добавлет 0 к месяцам 1...9)

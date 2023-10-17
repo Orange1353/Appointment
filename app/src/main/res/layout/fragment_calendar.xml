@@ -6,14 +6,14 @@
     <data>
         <variable
             name="vm"
-            type="com.example.appointment.features.write.WriteViewModel" />
+            type="com.example.appointment.features.calendar.CalendarViewModel" />
 
         <import type="android.text.TextUtils" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.appointment.features.write.WriteFragment">
+        tools:context="com.example.appointment.features.calendar.CalendarFragment">
 
         <TextView
             android:id="@+id/welcome_txt"
