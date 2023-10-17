@@ -3,17 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="vm"
-            type="com.example.appointment.features.menu.MenuViewModel" />
-
-        <import type="android.text.TextUtils" />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.appointment.features.menu.MenuFragment">
+        tools:context="com.example.appointment.features.personalData.PersonalDataFragment">
 
         <TextView
             android:id="@+id/welcome_txt"
@@ -31,7 +24,7 @@
         <Button
             android:id="@+id/logout_button"
             android:layout_width="90dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:text="Выход"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,15 +33,15 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
-        android:id="@+id/personal_data_button"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:text="Личные данные"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/personal_data_button"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:text="Личные данные"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/name_txt"

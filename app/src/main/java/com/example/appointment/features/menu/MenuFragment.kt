@@ -15,6 +15,7 @@ import com.example.appointment.R
 import com.example.appointment.databinding.FragmentMenuBinding
 import com.example.appointment.features.menu.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_menu.personal_data_button
 import kotlinx.android.synthetic.main.fragment_menu.write_button
 import kotlinx.coroutines.launch
 
@@ -30,8 +31,9 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     private val viewModel : MenuViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MenuToWrite()
+        MenuToCalendar()
 //        MenuToSplash()
+        MenuToPersonalData()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,9 +93,14 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 //            findNavController().navigate(R.id.action_menuFragment_to_signInFragment)
 //        }
 //    }
-    fun MenuToWrite(){
+    fun MenuToCalendar(){
         write_button.setOnClickListener{
             findNavController().navigate(R.id.action_menuFragment_to_calendarFragment)
+        }
+    }
+    fun MenuToPersonalData(){
+        personal_data_button.setOnClickListener{
+            findNavController().navigate(R.id.action_menuFragment_to_personalDataFragment)
         }
     }
 }
