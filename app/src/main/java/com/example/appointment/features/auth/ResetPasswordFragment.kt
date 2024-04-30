@@ -7,18 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
 import com.example.appointment.databinding.FragmentPasswordResetBinding
+import com.example.appointment.features.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_password_reset.user_email_etvl
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ResetPasswordFragment : Fragment(R.layout.fragment_password_reset) {
+class ResetPasswordFragment : BaseFragment() {
 
     private var _binding : FragmentPasswordResetBinding? = null
     private val binding get() = _binding

@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
 import com.example.appointment.databinding.FragmentSignupBinding
+import com.example.appointment.features.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_signup.confirm_password_etvl
 import kotlinx.android.synthetic.main.fragment_signup.user_email_etvl
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_signup.user_password_etvl
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment(R.layout.fragment_signup) {
+class SignUpFragment : BaseFragment() {
     private val viewModel : SignUpViewModel by activityViewModels()
     private var _binding : FragmentSignupBinding? = null
     private val binding get()  = _binding

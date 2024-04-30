@@ -1,15 +1,18 @@
 package com.example.appointment.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.appointment.R
+import com.example.appointment.features.OnBottomNavigationVisibilityListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.bottomBar
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnBottomNavigationVisibilityListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,7 +38,15 @@ class MainActivity : AppCompatActivity() {
         }*/
     }
 
-    fun setupBottomMenu() {
+    override fun showBottomNavigation(show: Boolean) {
+        if (show) {
+            bottomBar.visibility = View.VISIBLE
+        } else {
+            bottomBar.visibility = View.GONE
+        }
+    }
+
+    private fun setupBottomMenu() {
         val navController = this.findNavController(R.id.jhg)
         // магия из-за реализации меню в библиотеке smoothbottombar
         val popupMenu = PopupMenu(this, null)

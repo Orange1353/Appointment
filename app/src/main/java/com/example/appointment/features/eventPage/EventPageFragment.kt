@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.example.appointment.R
 import com.example.appointment.databinding.FragmentEventPageBinding
+import com.example.appointment.features.BaseFragment
 import com.example.appointment.models.local.GameEventModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 
-class EventPageFragment: Fragment(R.layout.fragment_event_page)  {
+class EventPageFragment: BaseFragment()  {
     private var _binding : FragmentEventPageBinding? = null
     private val binding get() = _binding
     private val viewModel : EventPageViewModel by activityViewModels()
