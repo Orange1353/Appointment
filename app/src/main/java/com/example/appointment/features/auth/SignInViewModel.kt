@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.appointment.data.repositories.BaseAuthRepository
 import com.example.appointment.data.repositories.IUserRepisitory
 import com.example.appointment.hilt.IAppSettings
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -48,14 +49,17 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+    fun isAuthUser(): Boolean {
+        return FirebaseAuth.getInstance().currentUser != null
+    }
+
     private fun actualSignInUser(email:String, password: String) = viewModelScope.launch {
         try {
             val user = repository.signInWithEmailPassword(email, password)
             user?.let {
-                _firebaseUser.postValue(it)
-                eventsChannel.send(AllEvents.Message("login success"))
+                eventsChannel.send(AllEvents.LogInSuccess("login success"))
             }
-        }catch(e:Exception){
+        } catch(e:Exception) {
             val error = e.toString().split(":").toTypedArray()
             Log.d(ControlsProviderService.TAG, "signInUser: ${error[1]}")
             eventsChannel.send(AllEvents.Error(error[1]))

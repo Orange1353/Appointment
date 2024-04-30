@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
 import com.example.appointment.databinding.FragmentSplashBinding
+import com.example.appointment.features.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,17 +22,13 @@ import kotlinx.coroutines.launch
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
 
     //private lateinit var binding : FragmentAuthBinding
 
     private var _binding : FragmentSplashBinding? = null
     private val binding get() = _binding
     private val viewModel : SplashViewModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +49,13 @@ class SplashFragment : Fragment() {
         binding?.lifecycleOwner = viewLifecycleOwner
         return view
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        //не onViewCreated потому что он чууть чуть раньше вызывается
+        super.onActivityCreated(savedInstanceState)
+        bottomNavListener?.showBottomNavigation(false)
+    }
+
     private fun getUser() {
         viewModel.getCurrentUser()
     }
@@ -62,7 +66,7 @@ class SplashFragment : Fragment() {
                 delay(1000L)
                 user?.let {
                     binding?.apply {
-                        findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+                        findNavController().navigate(R.id.action_splashFragment_to_personal_data)
                     }
                 } ?: binding?.apply {
                     findNavController().navigate(R.id.action_splashFragment_to_signInFragment)

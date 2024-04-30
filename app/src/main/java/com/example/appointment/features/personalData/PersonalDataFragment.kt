@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.appointment.R
 import com.example.appointment.databinding.FragmentPersonalDataBinding
+import com.example.appointment.features.BaseFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_personal_data.write_button
 
 @AndroidEntryPoint
 
-class PersonalDataFragment: Fragment(R.layout.fragment_personal_data)  {
+class PersonalDataFragment: BaseFragment()  {
     private lateinit var binding: FragmentPersonalDataBinding
     private lateinit var viewModel : PersonalDataViewModel// by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +49,7 @@ class PersonalDataFragment: Fragment(R.layout.fragment_personal_data)  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bottomNavListener?.showBottomNavigation(true)
         writeChenges()
     }
     fun writeChenges(){
