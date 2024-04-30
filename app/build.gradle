@@ -94,7 +94,8 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database")
 
-
+    //нижнее меню навигации
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
 
 }
 

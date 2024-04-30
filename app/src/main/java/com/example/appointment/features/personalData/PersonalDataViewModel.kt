@@ -36,11 +36,11 @@ class PersonalDataViewModel @Inject constructor (
     }
     fun reedOnceUser(userId: String) {
         database.child("users").child(userId).get().addOnSuccessListener {
-            userUId.value = (it.value as HashMap<String, String>)["userUId"].orEmpty()
-            name.value = (it.value as HashMap<String, String>)[KEY_NAME]
-            day.value = (it.value as HashMap<String, String>)["day"]
-            team.value = (it.value as HashMap<String, String>)["team"]
-            camo.value = (it.value as HashMap<String, String>)["camo"]
+            userUId.value = (it.value as? HashMap<String, String>)?.get("userUId").orEmpty()
+            name.value = (it.value as? HashMap<String, String>)?.get(KEY_NAME).orEmpty()
+            day.value = (it.value as? HashMap<String, String>)?.get("day").orEmpty()
+            team.value = (it.value as? HashMap<String, String>)?.get("team").orEmpty()
+            camo.value = (it.value as? HashMap<String, String>)?.get("camo").orEmpty()
         }.addOnFailureListener {
             Log.e("firebase", "Error getting data", it)
         }
