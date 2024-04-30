@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.appointment.R
@@ -35,18 +34,14 @@ class SplashFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         //Initial binding
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
-        getUser()
-        registerObserver()
         val view = binding?.root
-
-        // получение viewModel, для доспупа к методам vm
-        val viewModel: SplashViewModel by viewModels()
         binding?.vm = viewModel
         binding?.lifecycleOwner = viewLifecycleOwner
+
+        getUser()
+        registerObserver()
         return view
     }
 
